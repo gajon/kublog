@@ -5,7 +5,7 @@ module Kublog
     before_filter :set_comment_user, :only => [:create]
     
     def create
-      @post = Post.find(params[:post_id])
+      @post = Post.find_by_slug!(params[:post_id])
       @comment = @post.comments.build(params[:comment])
       respond_to do |format|
         if @comment.save
@@ -17,7 +17,7 @@ module Kublog
     end
     
     def destroy
-      @post = Post.find(params[:post_id])
+      @post = Post.find_by_slug!(params[:post_id])
       @comment = @post.comments.find(params[:id])
       @comment.destroy
       respond_to do |format|

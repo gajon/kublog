@@ -18,7 +18,7 @@ module Kublog
     end
     
     def show
-      post = Post.find(params[:id])
+      post = Post.find_by_slug!(params[:id])
       @presenter = PostPresenter.new(post)
     end
     
@@ -33,11 +33,11 @@ module Kublog
     end
     
     def edit
-      @presenter = PostFormPresenter.new(Post.find(params[:id]))
+      @presenter = PostFormPresenter.new(Post.find_by_slug!(params[:id]))
     end
     
     def update
-      @post = Post.find(params[:id])
+      @post = Post.find_by_slug!(params[:id])
       if @post.update_attributes(params[:post])
         redirect_to @post
       else
@@ -47,7 +47,7 @@ module Kublog
     end
     
     def destroy
-      @post = Post.find(params[:id])
+      @post = Post.find_by_slug!(params[:id])
       @post.destroy
       redirect_to posts_path
     end

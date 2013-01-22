@@ -4,7 +4,7 @@ module Kublog
     skip_filter :require_admin, :only => [:show]
     
     def show
-      @category = Category.find(params[:id])
+      @category = Category.find_by_slug!(params[:id])
       @presenter = PostsPresenter.new(@category)
       respond_to do |format|
         format.atom { render "/kublog/posts/index", :layout => false, :content_type => 'text/xml' }
@@ -25,7 +25,7 @@ module Kublog
     end
     
     def update
-      @category = Category.find(params[:id])
+      @category = Category.find_by_slug!(params[:id])
       respond_to do |format|
         if @category.update_attributes(params[:category])
           format.json { render :json => @category }
@@ -36,7 +36,7 @@ module Kublog
     end
     
     def destroy
-      @category = Category.find(params[:id])
+      @category = Category.find_by_slug!(params[:id])
       @category.destroy
       respond_to do |format|
         format.json{ render :json => @category }
